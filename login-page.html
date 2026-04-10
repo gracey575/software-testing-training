@@ -85,6 +85,31 @@ function togglePassword(id) {
     const field = document.getElementById(id);
     field.type = field.type === "password" ? "text" : "password";
 }
+const loginURL = "https://script.google.com/macros/s/AKfycbz-JZ9Ps47IrrADrxe4IU30TEWjCvhI_6KpgDbGIJGQMLjCOFyEchTfvv4oNpsTRX0/exec";
+
+document.getElementById("LoginForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = {
+    Email: document.getElementById("email").value,
+    Password: document.getElementById("password").value
+  };
+
+  fetch(loginURL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(result => {
+    if (result.success) {
+      alert("Login successful");
+      window.location.href = "content.html";
+    } else {
+      alert("Invalid email or password");
+    }
+  })
+  .catch(err => console.error("Error:", err));
+});
 </script>
 
 </body>
