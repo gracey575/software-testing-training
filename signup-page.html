@@ -80,64 +80,54 @@
     <body>
         <div class = "signup-container">
             <h2>Create Account</h2>
-            <form id = "SignUpForm" action="/signup" method="POST">
-                <input type="text" name="fullname" placeholder="Full Name" required>
-                <input type="email" name="email" placeholder="Email Address" required>
-                <div class="password-wrapper">
-                    <input type = "password" id = "password" placeholder="Password" required>
-                    <span class="toggle" onclick="togglePassword('password')">Show</span>
-                </div>
-                <div id = "strength">
-                    <div id = "strength-bar">    
-                    </div>
-                </div >
-                <div class = "password-wrapper">
-                    <input type = "password" id = "confirm", placeholder="Confirm Password" required>
-                    <span class = "toggle" onclick="togglePassword('confirm')">Show</span>
-                </div>
-                <p class="error" id="errorMsg"></p>
-                
-                <button type="submit">Sign Up</button>
-            </form>
-        </div>
-        <script>
-            function togglePassword(id) {
-                const field = document.getElementById(id);
-                field.type = field.type === "password" ? "text" : "password";
-            }
-            document.getElementById("password").addEventListener("input", function () {
-                const val = this.value;
-                const bar = document.getElementById("strenght-bar");
-                let strength = 0;
-                if (val.length > 6) strength++;
-                if (/[A-Z]/.test(val)) strength++;
-                if (/[0-9]/.test(val)) strength++;
-                if (/[^A-Za-z0-9]/.test(val)) strength++;
-                const widths = ["0%", "25%", "50%", "75%", "100%"];
-                const colors = ["red", "orange", "yellow", "blue", "green"];
-                bar.style.width = widths[strength];
-                bar.style.background = colors[strength];
-            });
-            document.getElementById("signupForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            const pass = document.getElementById("password").value;
-            const confirm = document.getElementById("confirm").value;
-            const error = document.getElementById("errorMsg");
-            if (pass !== confirm) {
-        error.textContent = "Passwords do not match";
-        return;
-            }
-            if (pass.length < 6) {
-        error.textContent = "Password must be at least 6 characters";
-        return;
-    }
-error.textContent = "";
-    alert("Account created successfully!");
+            <form id="SignUpForm">
+    <input type="text" name="fullname" id="fullname" placeholder="Full Name" required>
+
+    <input type="email" name="email" id="email" placeholder="Email Address" required>
+
+    <div class="password-wrapper">
+        <input type="password" id="password" placeholder="Password" required>
+        <span class="toggle" onclick="togglePassword('password')">Show</span>
+    </div>
+
+    <div id="strength">
+        <div id="strength-bar"></div>
+    </div>
+
+    <div class="password-wrapper">
+        <input type="password" id="confirm" placeholder="Confirm Password" required>
+        <span class="toggle" onclick="togglePassword('confirm')">Show</span>
+    </div>
+
+    <p class="error" id="errorMsg"></p>
+
+    <button type="submit">Sign Up</button>
+</form>
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbwChRNnVcTQyvvAutvCmsDDF1lzjVkYf9C8yUo_VK72YsntHOcM7zQahorDJJgLb96r/exec";
+
+document.getElementById("SignUpForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = {
+    Fullname: document.getElementById("fullname").value,
+    Email: document.getElementById("email").value,
+    Password: document.getElementById("password").value
+  };
+
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(result => {
+    alert("Signup successful");
+    window.location.href = "content.html";
+  })
+  .catch(err => console.error("Error:", err));
 });
-
-
-
-        </script>
+</script>
+        </div>
     </body>
 </head>
 </html>
