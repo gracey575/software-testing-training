@@ -85,12 +85,13 @@ function togglePassword(id) {
     const field = document.getElementById(id);
     field.type = field.type === "password" ? "text" : "password";
 }
-const loginURL = "https://script.google.com/macros/s/AKfycbz-JZ9Ps47IrrADrxe4IU30TEWjCvhI_6KpgDbGIJGQMLjCOFyEchTfvv4oNpsTRX0/exec";
+const loginURL = "https://script.google.com/macros/s/AKfycbyo-XnPCKnZfdzACUjUOm8EKbiT5h2wrsZ3HbOeJP_1IG9W2jrc0wr-r2drVI-GXsez/exec";
 
 document.getElementById("LoginForm").addEventListener("submit", e => {
   e.preventDefault();
 
   const data = {
+    action: "login",
     Email: document.getElementById("email").value,
     Password: document.getElementById("password").value
   };

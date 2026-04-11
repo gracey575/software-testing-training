@@ -80,7 +80,7 @@
     <body>
         <div class = "signup-container">
             <h2>Create Account</h2>
-            <form id="SignUpForm">
+    <form id="SignUpForm">
     <input type="text" name="fullname" id="fullname" placeholder="Full Name" required>
 
     <input type="email" name="email" id="email" placeholder="Email Address" required>
@@ -104,12 +104,13 @@
     <button type="submit">Sign Up</button>
 </form>
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbxA83Xu2ZxTRHZQYxC4AauE3TQjqHkVyEfdCRn3KAog0qmJfrqGK41Y64K1S1VI2_W4/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbyo-XnPCKnZfdzACUjUOm8EKbiT5h2wrsZ3HbOeJP_1IG9W2jrc0wr-r2drVI-GXsez/exec";
 
 document.getElementById("SignUpForm").addEventListener("submit", e => {
   e.preventDefault();
 
   const data = {
+    action: "signup",
     Fullname: document.getElementById("fullname").value,
     Email: document.getElementById("email").value,
     Password: document.getElementById("password").value
