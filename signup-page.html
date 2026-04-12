@@ -111,28 +111,8 @@
     </div>
 
 <script>
-    const dob = document.getElementById("dob").value;
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx9qGWOu6Buo5mH-I5ttc4I1hpbEmpNlOgXSSic-qRGUYUm0uMGlLtpc5WW7CoF8NhNZg/exec";
 
-// Age validation
-const birthDate = new Date(dob);
-const today = new Date();
-const age = today.getFullYear() - birthDate.getFullYear();
-const monthDiff = today.getMonth() - birthDate.getMonth();
-
-if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-}
-
-if (age < 18) {
-    document.getElementById("dobError").textContent = "You must be at least 18 years old.";
-    return;
-}
-
-document.getElementById("dobError").textContent = "";
-
-
-//const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzH2Ja8eqyUca3evH9W5HH4qdO42xyqbL56kVyyOUZK--E-NnYa3GBItQWRZq57D2HVMQ/exec";
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx9qGWOu6Buo5mH-I5ttc4I1hpbEmpNlOgXSSic-qRGUYUm0uMGlLtpc5WW7CoF8NhNZg/exec"
 // Show/Hide Password
 function togglePassword(id) {
     const field = document.getElementById(id);
@@ -144,7 +124,7 @@ document.getElementById("SignUpForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const fullname = document.getElementById("fullname").value;
-    const dob = document.getElementById("dob")
+    const dob = document.getElementById("dob").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const confirm = document.getElementById("confirm").value;
@@ -154,21 +134,32 @@ document.getElementById("SignUpForm").addEventListener("submit", async (e) => {
         document.getElementById("errorMsg").textContent = "Passwords do not match";
         return;
     }
-
     document.getElementById("errorMsg").textContent = "";
 
-    // const data = {
-    //     fullname: fullname,
-    //     email: email,
-    //     password: password
-    // };
+    // AGE VALIDATION (corrected)
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
 
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+
+    if (age < 18) {
+        document.getElementById("dobError").textContent = "You must be at least 18 years old.";
+        return;
+    }
+
+    document.getElementById("dobError").textContent = "";
+
+    // Send data to backend
     const data = {
-    fullname: fullname,
-    email: email,
-    password: password,
-    dob: dob
-};
+        fullname: fullname,
+        email: email,
+        password: password,
+        dob: dob
+    };
 
     const res = await fetch(`${WEB_APP_URL}?action=signup`, {
         method: "POST",
