@@ -48,7 +48,7 @@
         color: #0078ff;
     }
 
- button {
+    button {
         width: 100%;
         padding: 10px;
         background: #0078ff;
@@ -64,6 +64,7 @@
     }
 </style>
 </head>
+
 <body>
 <div class="container">
     <h2>Login</h2>
@@ -73,7 +74,7 @@
 
         <div class="password-wrapper">
             <input type="password" id="password" placeholder="Password" required>
-            <span class="toggle" onclick="togglePassword('loginPass')">Show</span>
+            <span class="toggle" onclick="togglePassword('password')">Show</span>
         </div>
 
         <button type="submit">Login</button>
@@ -81,51 +82,38 @@
 </div>
 
 <script>
+// SAME WEB APP URL AS SIGNUP PAGE
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzH2Ja8eqyUca3evH9W5HH4qdO42xyqbL56kVyyOUZK--E-NnYa3GBItQWRZq57D2HVMQ/exec";
+
+// Show/Hide Password
 function togglePassword(id) {
     const field = document.getElementById(id);
     field.type = field.type === "password" ? "text" : "password";
 }
-//const loginURL = "https://script.google.com/macros/s/AKfycbwquZUTVgyFYb6APbVUKBbKDXOCd9YnYvTkPIHm-9hNYQrj0StDrBM2mYChJdTLggg3/exec";
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz_jS2qnD1uNxK9U9t2wrUsV2VQxbfay5CvTwPX1I_OJkaFR8Y1wCPa5Y3UcCwPRuDYig/exec";
 
+// Login Handler
 document.getElementById("LoginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const data = {
-    //action: "login",
-    Email: document.getElementById("email").value,
-    Password: document.getElementById("password").value
-  };
+    const data = {
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+    };
 
-  const res = await fetch(`${WEB_APP_URL}?action=login`, {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
+    const res = await fetch(`${WEB_APP_URL}?action=login`, {
+        method: "POST",
+        body: JSON.stringify(data)
+    });
 
-  const result = await res.json();
+    const result = await res.json();
 
-  if (result.status === "success") {
-    alert("Login successful");
-    window.location.href = "dashboard.html";
-  } else {
-    alert("Invalid email or password");
-  }
+    if (result.status === "success") {
+        alert("Login successful");
+        window.location.href = "content.html"; // redirect page
+    } else {
+        alert("Invalid email or password");
+    }
 });
-//   fetch(loginURL, {
-//     method: "POST",
-//     body: JSON.stringify(data)
-//   })
-//   .then(res => res.json())
-//   .then(result => {
-//     if (result.success) {
-//       alert("Login successful");
-//       window.location.href = "content.html";
-//     } else {
-//       alert("Invalid email or password");
-//     }
-//   })
-//   .catch(err => console.error("Error:", err));
-// });
 </script>
 
 </body>

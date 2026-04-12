@@ -6,15 +6,14 @@
     <title>Sign Up</title>
     <style>
         body {
-            font-family:Arial, sans-serif;
-            background:#f4f4f4;
-            display:flex;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            
         }
-        .container {
+        .signup-container {
             background: white;
             padding: 30px;
             width: 350px;
@@ -22,7 +21,7 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         h2 {
-            text-align:center;
+            text-align: center;
             margin-bottom: 20px;
         }
         input {
@@ -36,16 +35,16 @@
             position: relative;
         }
         .toggle {
-            position:absolute;
+            position: absolute;
             right: 10px;
             top: 12px;
             cursor: pointer;
             font-size: 14px;
-            color: #0078ff
+            color: #0078ff;
         }
         #strength {
             height: 6px;
-            width: 100px;
+            width: 100%;
             background: #ddd;
             border-radius: 5px;
             margin-top: 5px;
@@ -71,74 +70,87 @@
             background: #005fcc;
         }
         .error {
-            color:red;
+            color: red;
             font-size: 14px;
             margin-top: -5px;
         }
     </style>
 </head>
-    <body>
-        <div class = "signup-container">
-            <h2>Create Account</h2>
-    <form id="SignUpForm">
-    <input type="text" name="fullname" id="fullname" placeholder="Full Name" required>
 
-    <input type="email" name="email" id="email" placeholder="Email Address" required>
+<body>
+    <div class="signup-container">
+        <h2>Create Account</h2>
 
-    <div class="password-wrapper">
-        <input type="password" id="password" placeholder="Password" required>
-        <span class="toggle" onclick="togglePassword('password')">Show</span>
+        <form id="SignUpForm">
+            <input type="text" id="fullname" placeholder="Full Name" required>
+
+            <input type="email" id="email" placeholder="Email Address" required>
+
+            <div class="password-wrapper">
+                <input type="password" id="password" placeholder="Password" required>
+                <span class="toggle" onclick="togglePassword('password')">Show</span>
+            </div>
+
+            <div id="strength">
+                <div id="strength-bar"></div>
+            </div>
+
+            <div class="password-wrapper">
+                <input type="password" id="confirm" placeholder="Confirm Password" required>
+                <span class="toggle" onclick="togglePassword('confirm')">Show</span>
+            </div>
+
+            <p class="error" id="errorMsg"></p>
+
+            <button type="submit">Sign Up</button>
+        </form>
     </div>
 
-    <div id="strength">
-        <div id="strength-bar"></div>
-    </div>
-
-    <div class="password-wrapper">
-        <input type="password" id="confirm" placeholder="Confirm Password" required>
-        <span class="toggle" onclick="togglePassword('confirm')">Show</span>
-    </div>
-
-    <p class="error" id="errorMsg"></p>
-
-    <button type="submit">Sign Up</button>
-</form>
 <script>
-//const scriptURL = "https://script.google.com/macros/s/AKfycbzv3k3SEkSFEFznukKd0BcOpIecLzQ_ok__27ZrsYCTYtsY0PoQRXm5zSNDpdFuR004/exec";
-//const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz_jS2qnD1uNxK9U9t2wrUsV2VQxbfay5CvTwPX1I_OJkaFR8Y1wCPa5Y3UcCwPRuDYig/exec"
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbz-U23zo2BtpVvUqX2rJ6rfZeauLUG7u7XcqhBdyu4zs4pIvqPJwkpLfSPMB_UxM9WbFA/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzH2Ja8eqyUca3evH9W5HH4qdO42xyqbL56kVyyOUZK--E-NnYa3GBItQWRZq57D2HVMQ/exec";
+
+// Show/Hide Password
+function togglePassword(id) {
+    const field = document.getElementById(id);
+    field.type = field.type === "password" ? "text" : "password";
+}
+
+// Signup Handler
 document.getElementById("SignUpForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const data = {
-    //action: "signup",
-    Fullname: document.getElementById("fullname").value,
-    Email: document.getElementById("email").value,
-    Password: document.getElementById("password").value
-  };
-  const res = await fetch(`${WEB_APP_URL}?action=signup`, {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
+    const fullname = document.getElementById("fullname").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
 
-  const result = await res.json();
-  alert(result.message);
-  window.location.href = "login-page.html"
+    // Password match check
+    if (password !== confirm) {
+        document.getElementById("errorMsg").textContent = "Passwords do not match";
+        return;
+    }
+
+    document.getElementById("errorMsg").textContent = "";
+
+    const data = {
+        fullname: fullname,
+        email: email,
+        password: password
+    };
+
+    const res = await fetch(`${WEB_APP_URL}?action=signup`, {
+        method: "POST",
+        body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+    alert(result.message);
+
+    if (result.status === "success") {
+        window.location.href = "login-page.html";
+    }
 });
-
-//   fetch(scriptURL, {
-//     method: "POST",
-//     body: JSON.stringify(data)
-//   })
-//   .then(res => res.json())
-//   .then(result => {
-//     alert("Signup successful");
-//     window.location.href = "content.html";
-//   })
-//   .catch(err => console.error("Error:", err));
-// });
 </script>
-        </div>
-    </body>
-</head>
+
+</body>
 </html>
